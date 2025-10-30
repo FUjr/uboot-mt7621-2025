@@ -65,6 +65,7 @@ fi
 
 if [ "${10}" -ge 0 -a "${10}" -le 48 ]; then
 	echo "set watchdog pin: ${10}"
+	echo "#define CONFIG_WDT_MT7621  1" >> ./include/configs/mt7621-common.h
 	echo "#define CONFIG_HW_WATCHDOG  1" >> ./include/configs/mt7621-common.h
 	echo "#define GPIO_WATCHDOG ${10}" >> ./include/configs/mt7621-common.h
 	if [ "${11}" -ge 0 -a "${11}" -le 120 ]; then

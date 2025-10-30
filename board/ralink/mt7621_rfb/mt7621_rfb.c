@@ -83,7 +83,9 @@ int last_stage_init(void)
 #else
 	#define MT7621_UNUSED_PIN_LIST {}
 #endif
-
+#ifdef GPIO_WATCHDOG
+	gpio_output_init(GPIO_WATCHDOG, 1, "wdt-pin");	// disable watchdog
+#endif
 	int pinlist[] = MT7621_UNUSED_PIN_LIST;
 
 	pins_unused_init(pinlist, sizeof(pinlist)/sizeof(int));
