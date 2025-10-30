@@ -18,7 +18,8 @@ cd $(dirname "$0")
 # $7	number: ram frequency
 # $8	string: ddr param
 # $9	string: baud rate
-
+# $10   number: watchdog pin
+# $11   number: watchdog timeout
 echo "Parse flash type: $1"
 # simple check if partition table is valid
 if [ -z $( echo -n "$2" | grep '),-(firmware)') ]; then
@@ -61,6 +62,21 @@ if [ "$5" -ge 0 -a "$5" -le 48 ]; then
 else
 	echo "System LED is disabled!"
 fi
+
+if [ "${10}" -ge 0 -a "${10}" -le 48 ]; then
+	echo "set watchdog pin: ${10}"
+	echo "#define CONFIG_HW_WATCHDOG  1" >> ./include/configs/mt7621-common.h
+	echo "#define GPIO_WATCHDOG ${10}" >> ./include/configs/mt7621-common.h
+	if [ "${11}" -ge 0 -a "${11}" -le 120 ]; then
+		echo "#define CONFIG_AT91_HW_WDT_TIMEOUT ${11}" ./include/configs/mt7621-common.h
+	else
+		echo "WatchDog Timeout set to default(2) Sec!"
+	fi
+else
+	echo "WatchDog is disabled!"
+fi
+
+
 echo "#endif" >> ./include/configs/mt7621-common.h
 
 if [ "$6" -ge 400 -a "$6" -le 1200 ]; then
